@@ -150,5 +150,7 @@ int main()
     delete[] A.rez2;
     delete[] B.rez2;
     delete[] C.rez2;
+   
     return 0;
+
 }
