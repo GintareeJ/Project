@@ -10,7 +10,6 @@
 using std::cin;
 using std::string;
 using std::cout;
-std::vector<int>paz;
 
 
 //darbas atliktas su vector konteineriu
@@ -275,3 +274,4 @@ int main() {
 
     return 0;
 }
+
