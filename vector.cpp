@@ -5,6 +5,7 @@
 #include <ctime>
 #include <iomanip>
 #include <iomanip>
+#include <algorithm>
 
 using std::cin;
 using std::string;
@@ -18,7 +19,6 @@ struct studentas
 {
    string vardas, pavarde;
    std::vector<int> pazymiai;
-   int pazymiukiek; 
    double rez; //rezultatui su vidurkiu saugoti
    double rez2; //rezultatui su mediana saugoti
 };
@@ -54,16 +54,12 @@ int main() {
         cin >> s.pavarde;
         cout << "Iveskite pazymius (0 - baigti), paskutinis egzaminas: ";
         int p; //pazymiams
-        int kiek=0; //pazymiu kiekiui
         while(true)
         {
           cin>>p;
-          if(p!= 0) kiek++;
           if (p == 0) break;
           s.pazymiai.push_back(p);
         }
-       s.pazymiukiek=kiek;
-       kiek=0; 
        studentai.push_back(s);
     }
 
@@ -71,29 +67,24 @@ int main() {
     for(int i=0; i<studentai.size(); i++)
     {
         suma=0;
-        for(int j=0; j<studentai[i].pazymiukiek; j++)
+        for(int j=0; j<studentai[i].pazymiai.size(); j++)
         {
-            if (j != studentai[i].pazymiukiek - 1) suma+=studentai[i].pazymiai[j]; //sumuojame, tik jei j nera egzamino pazymio numeris
+            if (j != studentai[i].pazymiai.size() - 1) suma+=studentai[i].pazymiai[j]; //sumuojame, tik jei j nera egzamino pazymio numeris
         }
-        studentai[i].rez=suma/(studentai[i].pazymiukiek-1)*0.4+studentai[i].pazymiai.back()*0.6;
+        studentai[i].rez=suma/(studentai[i].pazymiai.size()-1)*0.4+studentai[i].pazymiai.back()*0.6;
     }
     
     //rusiuojame medianai
-    for(int i=0; i<studentai.size(); i++)
+    for(int i=0; i<studentai.size(); i++) //rikiuojame tik ND, be paskutinio egzamino
     {
-        suma=0;
-        for(int j=0; j<studentai[i].pazymiukiek-1; j++)
-        {
-           for(int jj=0; jj<studentai[i].pazymiukiek-1; jj++)
-           {
-            if(studentai[i].pazymiai[j]<studentai[i].pazymiai[jj]) std::swap(studentai[i].pazymiai[j], studentai[i].pazymiai[jj]);
-           }
+        if(studentai[i].pazymiai.size() > 1) {
+            std::sort(studentai[i].pazymiai.begin(), studentai[i].pazymiai.end() - 1);
         }
     }
     //skaiciuojame mediana ir bendra bala
         for(int i=0; i<studentai.size(); i++)
     {
-        int k = studentai[i].pazymiukiek;
+        int k = studentai[i].pazymiai.size();
         int nd = k - 1;
 
         double med;
@@ -141,43 +132,36 @@ int main() {
         int p; //pazymiams
         cin>>kiek;
         s.pazymiai.clear();
-        for(int i=0; i<kiek; i++)
+        s.pazymiai.resize(kiek);
+        for(int i = 0; i < kiek; i++)
         {
-          p=rand()% 10 + 1;  
-          s.pazymiai.push_back(p);
+            s.pazymiai[i] = rand() % 10 + 1;
         }
-       s.pazymiukiek=kiek;
-       kiek=0; 
-       studentai.push_back(s);
+        studentai.push_back(s);
     }
 
     double suma; //rezultatui skaiciuoti
     for(int i=0; i<studentai.size(); i++)
     {
         suma=0;
-        for(int j=0; j<studentai[i].pazymiukiek; j++)
+        for(int j=0; j<studentai[i].pazymiai.size(); j++)
         {
-            if (j != studentai[i].pazymiukiek - 1) suma+=studentai[i].pazymiai[j]; //sumuojame, tik jei j nera egzamino pazymio numeris
+            if (j != studentai[i].pazymiai.size() - 1) suma+=studentai[i].pazymiai[j]; //sumuojame, tik jei j nera egzamino pazymio numeris
         }
-        studentai[i].rez=suma/(studentai[i].pazymiukiek-1)*0.4+studentai[i].pazymiai.back()*0.6;
+        studentai[i].rez=suma/(studentai[i].pazymiai.size()-1)*0.4+studentai[i].pazymiai.back()*0.6;
     }
     
     //rusiuojame medianai
-    for(int i=0; i<studentai.size(); i++)
+    for(int i=0; i<studentai.size(); i++) //rikiuojame tik ND, be paskutinio egzamino
     {
-        suma=0;
-        for(int j=0; j<studentai[i].pazymiukiek-1; j++)
-        {
-           for(int jj=0; jj<studentai[i].pazymiukiek-1; jj++)
-           {
-            if(studentai[i].pazymiai[j]<studentai[i].pazymiai[jj]) std::swap(studentai[i].pazymiai[j], studentai[i].pazymiai[jj]);
-           }
+        if(studentai[i].pazymiai.size() > 1) {
+            std::sort(studentai[i].pazymiai.begin(), studentai[i].pazymiai.end() - 1);
         }
     }
     //skaiciuojame mediana ir bendra bala
         for(int i=0; i<studentai.size(); i++)
     {
-        int k = studentai[i].pazymiukiek;
+        int k = studentai[i].pazymiai.size();
         int nd = k - 1;
 
         double med;
@@ -227,41 +211,35 @@ int main() {
                 }
         int p; //pazymiams
         s.pazymiai.clear();
-        for(int i=0; i<kiek; i++)
+        s.pazymiai.resize(kiek);
+        for(int i = 0; i < kiek; i++)
         {
-          p=rand()% 10 + 1;  
-          s.pazymiai.push_back(p);
+            s.pazymiai[i] = rand() % 10 + 1;
         }
-       s.pazymiukiek=kiek; 
-       studentai.push_back(s);
+        studentai.push_back(s);
         }
     double suma; //rezultatui skaiciuoti
     for(int i=0; i<studentai.size(); i++)
     {
         suma=0;
-        for(int j=0; j<studentai[i].pazymiukiek; j++)
+        for(int j=0; j<studentai[i].pazymiai.size(); j++)
         {
-            if (j != studentai[i].pazymiukiek - 1) suma+=studentai[i].pazymiai[j]; //sumuojame, tik jei j nera egzamino pazymio numeris
+            if (j != studentai[i].pazymiai.size() - 1) suma+=studentai[i].pazymiai[j]; //sumuojame, tik jei j nera egzamino pazymio numeris
         }
-        studentai[i].rez=suma/(studentai[i].pazymiukiek-1)*0.4+studentai[i].pazymiai.back()*0.6;
+        studentai[i].rez=suma/(studentai[i].pazymiai.size()-1)*0.4+studentai[i].pazymiai.back()*0.6;
     }
     
     //rusiuojame medianai
-    for(int i=0; i<studentai.size(); i++)
+    for(int i=0; i<studentai.size(); i++) //rikiuojame tik ND, be paskutinio egzamino
     {
-        suma=0;
-        for(int j=0; j<studentai[i].pazymiukiek-1; j++)
-        {
-           for(int jj=0; jj<studentai[i].pazymiukiek-1; jj++)
-           {
-            if(studentai[i].pazymiai[j]<studentai[i].pazymiai[jj]) std::swap(studentai[i].pazymiai[j], studentai[i].pazymiai[jj]);
-           }
+        if(studentai[i].pazymiai.size() > 1) {
+            std::sort(studentai[i].pazymiai.begin(), studentai[i].pazymiai.end() - 1);
         }
     }
     //skaiciuojame mediana ir bendra bala
         for(int i=0; i<studentai.size(); i++)
     {
-        int k = studentai[i].pazymiukiek;
+        int k = studentai[i].pazymiai.size();
         int nd = k - 1;
 
         double med;
